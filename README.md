@@ -139,7 +139,17 @@ Copy the files from `html` to your web server's root folder.  Run `html/get_asse
 
 Copy `init.d/quakejs` to `/etc/init.d/`, make it executable, and enable it by running `sudo update-rc.d quakejs defaults` (under Debian).
 
-*Step by step instructions can be found at https://steamforge.net/wiki/index.php/How_to_setup_a_local_QuakeJS_server_under_Debian_9*
+*Step by step instructions can be found at https://steamforge.net/wiki/index.php/How_to_setup_a_local_QuakeJS_server_under_Debian_9_or_Debian_10*
+
+## Adding custom maps & content
+
+[digidigital](https://github.com/digidigital/) has written a guide on adding custom content under Linux.  It is part of the repo and can be found at https://github.com/begleysm/quakejs/blob/master/cctools/README.md
+
+## Windows
+
+Step by step instructions on how to setup a server under Windows 10 can be found at https://steamforge.net/wiki/index.php/How_to_setup_a_local_QuakeJS_server_under_Windows_10#Adding_your_own_Maps
+
+A video guide on setting up a Windows 10 server, and adding custom content, under Windows 10 has been developed by [grabisoft](https://github.com/grabisoft) and can be viewed at https://www.youtube.com/watch?v=m57rMXASWms
 
 ## License
 

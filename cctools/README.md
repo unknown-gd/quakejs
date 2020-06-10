@@ -1,13 +1,15 @@
 # Custom Content in QuakeJS
 
+Written by [digidigital](https://github.com/digidigital/)
+
 The repak.js-script seems to no longer work with current versions of node.
 You can add custom content (for personal use only!) like textures, models, maps to the pak0.pk3 of the Q3A-Demo that is used to obtain the proprietary art assets. 
 
-@Grabisoft has made a great [video](https://www.youtube.com/watch?v=m57rMXASWms&feature=youtu.be) that I used as the foundation for this guide. *Spoiler: I think the step where you calculate the checksums is easier in this guide* 
+[Grabisoft](https://github.com/grabisoft) has made a great [video](https://www.youtube.com/watch?v=m57rMXASWms&feature=youtu.be) that I used as the foundation for this guide. *Spoiler: I think the step where the checksums are calculated is made easier in this guide* 
 
 **As a prerequisite I assume you have installed a "vanilla" server of quakejs running as user "quake" as described in this
 [tutorial](https://steamforge.net/wiki/index.php/How_to_setup_a_local_QuakeJS_server_under_Debian_9_or_Debian_10#The_Simpler_Method).
-It is impotant that you have checked your server is running fine in the default configuration.
+It is important that you have checked your server is running fine in the default configuration.
 The server should be stopped while you make all the changes.**
  
 ## PK3 Files
