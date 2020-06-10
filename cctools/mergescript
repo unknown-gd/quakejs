@@ -21,7 +21,7 @@
 # offer a lot of space for your maps and models. There seems to be a file-size-restiction 
 # when loading pak-files. Try to keep them under 75 MB!
 #
-#Example: ./mergescript ../base/baseq2/pak100.pk3
+#Example: ./mergescript ../base/baseq3/pak100.pk3
 
 file="$(basename $1)"
 
