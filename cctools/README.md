@@ -33,9 +33,9 @@ In case the script ist not executable
 ```shell
 sudo chmod +x mergescript 
 ```
-Put all the **.pk3**-files (maps, models, textures) in the ./myAssets folder. *Do not forget to **unzip your downloads!** Make sure you do not put a zip-file there!"
+Put all the **.pk3**-files (maps, models, textures) in the ./myAssets folder. *Do not forget to **unzip your downloads!** Make sure you do not put a zip-file there!*
 
-Now execute the mergescript and point it to the file you would like to be the "target" of the merge-operation. The script will copy it into the current folder and add your files. Good candidates are pak100.pk3 and pak101.pk3 that have been downloaded to ~/quakejs/base/assets/baseq3 during the installation. 
+Now execute the mergescript and point it to the file you would like to be the "target" of the merge-operation. The script will copy it into the current folder and add your files. Good candidates are pak100.pk3 and pak101.pk3 that have been downloaded to ~/quakejs/base/baseq3 during the installation. 
 
 Type
 ```shell
