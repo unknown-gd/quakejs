@@ -39,15 +39,15 @@ Now execute the mergescript and point it to the file you would like to be the "t
 
 Type
 ```shell
-./mergescript ../base/assets/baseq3/pak100.pk3
+./mergescript ../base/baseq3/pak100.pk3
 ```
 or
 ```shell
-./mergescript ../base/assets/baseq3/pak101.pk3
+./mergescript ../base/baseq3/pak101.pk3
 ```
 and you should get something like this
 ```shell
-User@Ubuntu-PC:~/quakejs/cctools$ ./mergescript ../pak100.pk3
+User@Ubuntu-PC:~/quakejs/cctools$ ./mergescript ../base/baseq3/pak100.pk3
 Attempting to copy pak100.pk3 in the current directory...
 Done
 
