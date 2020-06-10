@@ -73,7 +73,7 @@ Please update your /var/www/html/assets/manifest.json with this:
      "checksum": 2586809043
   },
 
-Open the manifest with nano adn make the changes: 
+Open the manifest with nano and make the changes: 
 sudo nano /var/www/html/assets/manifest.json
 
 STRG+o to save changes
@@ -258,9 +258,9 @@ Things I ran into:
 * I deleted files from pak0.pk3 that were needed to start the game
 * Forgot to put the updated pak0.pk3 in both folders 
  
-## How to find what is missing...
+# How to find what is missing...
 
-### Textures
+## Identify missing textures
 When you put custom maps in the pak0.pk3 you may run into the issue that you have a lot of missing textures.
 
 This issue can be solved by manually adding the missing textures. If you use the demo pak0.pk3 you can take the CC-licensed hi-res textures from [here](https://ioquake3.org/extras/replacement_content/) or in case there is still something missing from openarena. The openarena-zip contains a pak4-textures.pk3
@@ -277,6 +277,14 @@ now write down all textures that are commented with "DEFAULTED".
 Those are the files you need to find and put in the texture folders of pak0.pk3
 
 If the map uses a lot of textures/shaders the upper part of the list sometimes is not displayed in the console. In this case you can open the page in Firefox or Chromium developer mode (Press F12). Switch to the Console-Tab. Everything in the game's console is displayed there as well.
+
+## Other missing content (sounds / models)
+
+In order to find out what is missing start the map in your browser and open the console after joining the server by pressing
+
+~ or ^
+
+Missing content is written in bold and yellow.
 
 ## Sources for custom content and missing textures
 The Q3A demo is missing some textures and models compared with the full version (e.g. there is no Grenade Launcher and BFG10!).
