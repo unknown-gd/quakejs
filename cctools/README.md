@@ -1,17 +1,97 @@
-# Custom Content in QuakeJS
+# Adding Maps & Custom Content in QuakeJS
 
 Written by [digidigital](https://github.com/digidigital/)
 
-The repak.js-script seems to no longer work with current versions of node.
-You can add custom content (for personal use only!) like textures, models, maps to the pak0.pk3 of the Q3A-Demo that is used to obtain the proprietary art assets. 
+The repak.js-script that rearrages map-files so they can be added to the game seems to no longer work with current versions of node.
 
-[Grabisoft](https://github.com/grabisoft) has made a great [video](https://www.youtube.com/watch?v=m57rMXASWms&feature=youtu.be) that I used as the foundation for this guide. *Spoiler: I think the step where the checksums are calculated is made easier in this guide* 
+### Option 1: Add your files to pak100.pk3 and pak101.pk3
+If you don´t want to optimize/customize your pak0 (remove maps / models to save drive space, adjust bot files, etc.) there is a much simpler way. All your maps, models and textures can simply go into pak100.pk3 and pak101.pk3. Those files are small and there is a lot of space for your files left. You simply put the merged files in the right places and update one json-file and your server.cfg. I have written a script that copies your custom .pk3 content into Quakejs´s .pk3s and calculates the correct checksums and manifest.json info for you. So it's really easy ;)  
+
+### Option 2: Customize pak0.pk3 
+You can add custom content like textures, models, maps to the pak0.pk3 of the Q3A-Demo that is used to obtain the proprietary art assets. [Grabisoft](https://github.com/grabisoft) has made a great [video](https://www.youtube.com/watch?v=m57rMXASWms&feature=youtu.be) that I used as the foundation for this guide regarding the (more complex) pak0.pk3 modification
 
 **As a prerequisite I assume you have installed a "vanilla" server of quakejs running as user "quake" as described in this
 [tutorial](https://steamforge.net/wiki/index.php/How_to_setup_a_local_QuakeJS_server_under_Debian_9_or_Debian_10#The_Simpler_Method).
 It is important that you have checked your server is running fine in the default configuration.
 The server should be stopped while you make all the changes.**
  
+# Adding maps, models and textures the easy way
+
+The games content is stored in .pk3-files (basically zip-files). There seems to be a file-size-restiction in the browser when loading pk3-files. Try to keep them under 75 MB!
+
+Since this is the "easy" option I don't go into details of what we are doing and provide you with a simple step-by-step guide. If you need more info or run into problems just read the more complex guide down below ;) 
+
+We will use the **mergescript** to merge your files with the already existing ones.
+
+#### mergescript
+The scripts need libarchive-zip-perl to calculate the checksum and zipmerge for merging the pk3-files
+```shell
+sudo apt install libarchive-zip-perl zipmerge
+```
+
+In case the script ist not executable 
+```shell
+sudo chmod +x mergescript 
+```
+Put all the **.pk3**-files (maps, models, textures) in the ./myAssets folder. *Do not forget to **unzip your downloads!** Make sure you do not put a zip-file there!"
+
+Now execute the mergescript and point it to the file you would like to be the "target" of the merge-operation. The script will copy it into the current folder and add your files. Good candidates are pak100.pk3 and pak101.pk3 that have been downloaded to ~/quakejs/base/assets/baseq3 during the installation. 
+
+Type
+```shell
+./mergescript ../base/assets/baseq3/pak100.pk3
+```
+or
+```shell
+./mergescript ../base/assets/baseq3/pak101.pk3
+```
+and you should get something like this
+```shell
+User@Ubuntu-PC:~/quakejs/cctools$ ./mergescript ../pak100.pk3
+Attempting to copy pak100.pk3 in the current directory...
+Done
+
+Attempting to merge files...
+Done
+
+Calculating CRC32 checksum...
+
+Renaming pak100.pk3 to 2586809043-pak100.pk3
+Done
+
+Now copy the new file in /var/www/html/assets/baseq3 and in ../base/assets/baseq3
+You can copy the files with the following commands (make backup of original files first!)
+
+sudo mv 2586809043-pak100.pk3 /var/www/html/assets/baseq3
+mv 2586809043-pak100.pk3 ../base/baseq3/pak100.pk3
+
+Please update your /var/www/html/assets/manifest.json with this:
+
+  {
+     "name": "baseq3/pak0.pk3",
+     "compressed": 18856192,
+     "checksum": 2586809043
+  },
+
+Open the manifest with nano adn make the changes: 
+sudo nano /var/www/html/assets/manifest.json
+
+STRG+o to save changes
+STRG+x to exit nano
+
+If you have added maps you want to adjust your mapcycle in server.cfg
+sudo nano ../base/baseq3/server.cfg
+
+Restart Apache webserver with
+
+sudo service apache2 restart
+
+and (re)start you quakejs server
+```
+If you follow all the steps in mergescript's output and your pk3 is below 75MB you should have some new stuff on your server!
+
+# The more complicated way to add content by modifying pak0.pk3
+
 ## PK3 Files
 In order to change a pk3 file you simply rename it to .zip and open it with you preffered ZIP-manager software. After you have copied, deleted or added files you simply close the file an rename the extension back to .pk3 
 
@@ -23,27 +103,6 @@ Add or delete content with a ZIP-Manager then
 ```shell
 mv pak0.zip pak0.pk3
 ```
-## Sources for custom content and missing textures
-The Q3A demo is missing some textures and models compared with the full version (e.g. there is no BFG10!).
-Therefore you might run into issues with missing textures or models when you add custom maps.
-In order to add those missing items you can take the files from freely available sources.
-
-If you prepare hi-res textures you find a good pack here
-[ioquake hi res textures](https://ioquake3.org/extras/replacement_content/)
-
-Openarena is the free "clone" of Q3A. all proprietary content is replaced with a free version. 
-Download the [openarena](http://openarena.ws/download.php?view.4) in ZIP format in order to get the BFG10 replacement files...
-
-Since openarena still misses a lot of textures replacement packs have been created 
-[OA Packs 1](https://download.tuxfamily.org/openarena/files/pk3/missingtextures/) 
-[OA Packs 2](https://download.tuxfamily.org/openarena/files/pk3/q3a2oa/)
-
-The good news is that the files usually have the same name as in Q3A and you can find them in the same folder structure in the PK3 files. So it's basically about identifying what you need and then copy the files from one PAK3 to the same location in the pak0.pk3 you use on your server.
-
-**It's not a good idea to simply copy all (hi-res) textures - this will make the pak0.pk3 too large!**
-
-There are severaly websites that host maps for Q3A. I like Ente's Padmaps - Padgarden is one of the rare maps that use the fly item ;) 
-[World of Padman](https://worldofpadman.net/en/download/padfiles-q3a/)
 
 ## Adding content
 
@@ -179,12 +238,11 @@ After the info for pak101.pk3 add (**replace file size and checksum with the val
 Press "CTRL+o" to write the file and "CTRL+x" to exit nano.
 
 ## Final steps
-
+* Update mapcyle in server.cfg with new maps
 * Restart your webserver
 ```shell
 sudo service apache2 restart
 ```
-
 * Start your quakejs-Server
 
 ## Common issues / fixes
@@ -193,6 +251,7 @@ If the server starts fine but you can't connect or the games does not load you s
 Things I ran into:
 * My pak0.pk3 was too large (>~75MB)
 * I did not restart the webserver and for some reason this caused issues
+* I did not restart the quakejs server :)
 * My browser did not have the latest content (clear browser cache and saved data)
 * Typos while renaming files or adjusting the manifest.json
 * Forgot to adjust the values in manifest.json
@@ -208,7 +267,7 @@ This issue can be solved by manually adding the missing textures. If you use the
 
 In order to find out what is missing start the map in your browser and open the console by pressing
 
-SHIFT+^ or ~
+~ or ^
 
 then type
 
@@ -217,10 +276,31 @@ then type
 now write down all textures that are commented with "DEFAULTED".
 Those are the files you need to find and put in the texture folders of pak0.pk3
 
-If the map uses a lot of textures/shaders the upper part of the list sometimes is not displayed in the console. In this case you can open the page in Firefox developer mode (Press F12). Switch to the Console-Tab. Everything in the game's console is displayed there as well.
+If the map uses a lot of textures/shaders the upper part of the list sometimes is not displayed in the console. In this case you can open the page in Firefox or Chromium developer mode (Press F12). Switch to the Console-Tab. Everything in the game's console is displayed there as well.
+
+## Sources for custom content and missing textures
+The Q3A demo is missing some textures and models compared with the full version (e.g. there is no Grenade Launcher and BFG10!).
+Therefore you might run into issues with missing textures or models when you add custom maps.
+In order to add those missing items you can take the files from freely available sources.
+
+If you prepare hi-res textures you find a good pack here
+[ioquake hi res textures](https://ioquake3.org/extras/replacement_content/)
+
+Openarena is the free "clone" of Q3A. all proprietary content is replaced with a free version. 
+Download the [openarena](http://openarena.ws/download.php?view.4) in ZIP format in order to get the BFG10 replacement files...
+
+Since openarena still misses a lot of textures replacement packs have been created 
+[OA Packs 1](https://download.tuxfamily.org/openarena/files/pk3/missingtextures/) 
+[OA Packs 2](https://download.tuxfamily.org/openarena/files/pk3/q3a2oa/)
+
+The good news is that the files usually have the same name as in Q3A and you can find them in the same folder structure in the PK3 files. So it's basically about identifying what you need and then copy the files from one PAK3 to the same location in the pak0.pk3 you use on your server.
+
+**It's not a good idea to simply copy all (hi-res) textures - this will make the pak0.pk3 too large!**
+
+There are severaly websites that host maps for Q3A. I like Ente's Padmaps - Padgarden is one of the rare maps that use the fly item ;) 
+[World of Padman](https://worldofpadman.net/en/download/padfiles-q3a/)
 
 ### BFG10
-
 You need the files from opeanarenas pak0.pk3 ("*" means all files from that folder)
 * /models/powerups/ammo/bfgam.md3
 * /models/powerups/ammo/bfgammo2.tga
@@ -235,3 +315,11 @@ You need the files from opeanarenas pak0.pk3 ("*" means all files from that fold
 * /models/weaphits/bfgscroll.tga
 * /models/weaphits/fbfg.md3
 * /models/weapons2/bfg/*
+
+### Grenade Launcher
+You need the files from opeanarenas pak0.pk3 ("*" means all files from that folder)
+* /models/weapons2/grenadel/*
+* /models/ammo/grenade1.md3
+* /models/powerups/ammo/grenamm02.tga
+* /models/powerups/ammo/greandeam.md3
+* /models/weaphits/glboom/*
