@@ -24,28 +24,37 @@
 #Example: ./mergescript ../base/baseq3/pak100.pk3
 
 file="$(basename $1)"
+tempName="${file}-temp"
 
 echo "Attempting to copy $file in the current directory..."
-cp $1 ./
+cp $1 ./$tempName
 echo "Done"
 echo ""
 echo "Attempting to merge files..."
-zipmerge $file ./myAssets/*
+
+
+#Delete everything not .pk3 from the myAssets-folder
+if [ -n "$(ls -I "*pk3" ./myAssets)" ]
+then
+rm -f ./myAssets/$(ls -I "*pk3" ./myAssets)
+fi
+
+zipmerge $tempName ./myAssets/*
 echo "Done"
 echo ""
 echo "Calculating CRC32 checksum..." 
-checksum=$((0x$(crc32 $file)))
+checksum=$((0x$(crc32 $tempName)))
 echo "" 
 newName="$checksum-$file"
-echo "Renaming $file to $newName"
-mv $file $newName
+echo "Renaming $tempName to $newName"
+mv $tempName $newName
 echo "Done"
 echo ""
 echo "Now copy the new file in /var/www/html/assets/baseq3 and in ../base/assets/baseq3"
 echo "You can copy the files with the following commands (make backup of original files first!)"
 echo ""
-echo "sudo mv $newName /var/www/html/assets/baseq3"
-echo "mv $newName ../base/baseq3/$file"
+echo "sudo cp $newName /var/www/html/assets/baseq3"
+echo "sudo cp $newName ../base/baseq3/$file"
 echo ""
 filesize="$(stat -c%s $newName)"
 
@@ -73,4 +82,6 @@ echo "sudo nano ../base/baseq3/server.cfg"
 echo ""
 echo "Restart Apache webserver with"
 echo ""
-echo "sudo service apache2 restart and (re)start you quakejs server"
+echo "sudo service apache2 restart"
+echo ""
+echo "and (re)start you quakejs server"
