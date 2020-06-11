@@ -1,6 +1,6 @@
 #!/bin/sh
 # Merges the .pk3-files in ./myAssets with a file of your choice
-# Adds the crc32-value in front of the pak3-file an creates the info you
+# Adds the crc32-value in front of the pak3-file and creates the info you
 # need to add to manifest.json
 #
 # I you add maps do not forget to update your mapcycle in 
