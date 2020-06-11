@@ -291,7 +291,7 @@ then type
 now write down all textures that are commented with "DEFAULTED".
 Those are the files you need to find and put in the texture folders of pak0.pk3
 
-the type 
+then type 
 
 /r_printShaders 1
 /reconnect
