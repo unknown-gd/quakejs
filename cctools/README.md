@@ -33,7 +33,7 @@ In case the script ist not executable
 ```shell
 sudo chmod +x mergescript 
 ```
-Put all the **.pk3**-files (maps, models, textures) in the ./myAssets folder. *Do not forget to **unzip your downloads!** Make sure you do not put a zip-file there!*
+Put all the **.pk3**-files (maps, models, textures) in the ./myAssets folder. *Do not forget to **unzip your downloads!** Make sure you do not put a zip-file there!* The mergescript will delete everything in the myAssets-folder without .pk3-extension before it merges the files.
 
 Now execute the mergescript and point it to the file you would like to be the "target" of the merge-operation. The script will copy it into the current folder and add your files. Good candidates are pak100.pk3 and pak101.pk3 that have been downloaded to ~/quakejs/base/baseq3 during the installation. 
 
@@ -90,6 +90,8 @@ and (re)start you quakejs server
 ```
 If you follow all the steps in mergescript's output and your pk3 is below 75MB you should have some new stuff on your server!
 
+...from time to time you should delete the old pak100-files from the /var/www/html/assets/baseq3-folder.
+
 # The more complicated way to add content by modifying pak0.pk3
 
 ## PK3 Files
@@ -104,7 +106,7 @@ Add or delete content with a ZIP-Manager then
 mv pak0.zip pak0.pk3
 ```
 
-## Adding content
+## Adding content to pak0
 
 If you want to add a model, skin or map just copy the files from the pk3 into the same folders in the pak0.pk3 as described above (Rename file extension to .zip -> copy files/folders -> paste in your .pk3 -> close files -> rename extension back to .pk3)
 
@@ -224,7 +226,16 @@ Open manifest.json and add yor pak0.pk3's information
 sudo nano /var/www/html/asssets/manifest.json
 ```
 
-After the info for pak101.pk3 add (**replace file size and checksum with the values for your file!!!**)
+**DELETE** this part
+```
+{
+    "name": "linuxq3ademo-1.11-6.x86.gz.sh",
+    "compressed": 49292197,
+    "checksum": 857908472
+  },
+```
+
+After the info for pak101.pk3 **ADD** (**replace file size and checksum with the values for your file!!!**)
 "Compressed" is the size in bytes. It seems it doesn't really matter if this value is not correct. Please note that the filename in the manifest does **not** contain the checksum.
 
 ```
@@ -269,6 +280,10 @@ In order to find out what is missing start the map in your browser and open the 
 
 ~ or ^
 
+in quakejs.
+
+Check for any lines in bold and yellow with a "WARNING". If it says a .tga or .jpg is missing you have found a missing texture. Open a texteditor and take notes (do not forget to include the path information -> /texture/base_trim/blablabla.tga)
+
 then type
 
 /shaderlist
@@ -276,15 +291,21 @@ then type
 now write down all textures that are commented with "DEFAULTED".
 Those are the files you need to find and put in the texture folders of pak0.pk3
 
+the type 
+
+/r_printShaders 1
+/reconnect
+
+Now search for any lines with a "WARNING" and info about missing textures.
+
 If the map uses a lot of textures/shaders the upper part of the list sometimes is not displayed in the console. In this case you can open the page in Firefox or Chromium developer mode (Press F12). Switch to the Console-Tab. Everything in the game's console is displayed there as well.
 
-## Other missing content (sounds / models)
+Now you have to find the missing textures and put them in a zip-file with the same folder structure as given in the "texture
+not found" information.
 
-In order to find out what is missing start the map in your browser and open the console after joining the server by pressing
+After you have added all textures you rename the filename extension of your zip-file to .pk3 and merge it with pak100.pk3 the same way as we did with the maps.
 
-~ or ^
-
-Missing content is written in bold and yellow.
+Sometimes there are still textures missing after this step. In this case simply repeat the steps until no more textures are missing. 
 
 ## Sources for custom content and missing textures
 The Q3A demo is missing some textures and models compared with the full version (e.g. there is no Grenade Launcher and BFG10!).
@@ -301,9 +322,9 @@ Since openarena still misses a lot of textures replacement packs have been creat
 [OA Packs 1](https://download.tuxfamily.org/openarena/files/pk3/missingtextures/) 
 [OA Packs 2](https://download.tuxfamily.org/openarena/files/pk3/q3a2oa/)
 
-The good news is that the files usually have the same name as in Q3A and you can find them in the same folder structure in the PK3 files. So it's basically about identifying what you need and then copy the files from one PAK3 to the same location in the pak0.pk3 you use on your server.
+The good news is that the files usually have the same name as in Q3A and you can find them in the same folder structure in the PK3 files. So it's basically about identifying what you need and then copy the files from one PAK3 to the same location in the pak0.pk3, pak100.pk3 or pak101.pk3 you use on your server.
 
-**It's not a good idea to simply copy all (hi-res) textures - this will make the pak0.pk3 too large!**
+**It's not a good idea to simply copy all (hi-res) textures - this will make the .pk3 too large!**
 
 There are severaly websites that host maps for Q3A. I like Ente's Padmaps - Padgarden is one of the rare maps that use the fly item ;) 
 [World of Padman](https://worldofpadman.net/en/download/padfiles-q3a/)
