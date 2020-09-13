@@ -35,6 +35,17 @@ Set `content.quakejs.com` as the content server:
 echo '{ "content": "content.quakejs.com" }' > bin/web.json
 ```
 
+Note: you can _optionally_ also specify a master server:
+
+```shell
+cat <<EOF > bin/web.json
+{
+  "content": "content.quakejs.com",
+  "master": "master.quakejs.com"
+}
+EOF
+```
+
 Run the server:
 
 ```shell
