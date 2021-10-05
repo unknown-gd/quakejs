@@ -4,6 +4,8 @@ QuakeJS is a port of [ioquake3](http://www.ioquake3.org) to JavaScript with the 
 
 To see a live demo, check out [http://www.quakejs.com](http://www.quakejs.com).
 
+This project is a fork of [https://github.com/inolen/quakejs/](https://github.com/inolen/quakejs/) and makes QuakeJS fully locally hostable with your own QuakeJS server, local Play page, and local content server.
+
 
 ## Building binaries
 
@@ -150,6 +152,10 @@ Copy `init.d/quakejs` to `/etc/init.d/`, make it executable, and enable it by ru
 Step by step instructions on how to setup a server under Windows 10 can be found at https://steamforge.net/wiki/index.php/How_to_setup_a_local_QuakeJS_server_under_Windows_10#Adding_your_own_Maps
 
 A video guide on setting up a Windows 10 server, and adding custom content, under Windows 10 has been developed by [grabisoft](https://github.com/grabisoft) and can be viewed at https://www.youtube.com/watch?v=m57rMXASWms
+
+## Other QuakeJS Implementations
+* [quakejs-docker](https://github.com/treyyoder/quakejs-docker): a fully local and Dockerized quakejs server. Independent, unadulterated, and free from the middleman.
+* [quake-kube](https://github.com/criticalstack/quake-kube): a Kubernetes-ified version of QuakeJS that runs a dedicated Quake 3 server in a Kubernetes Deployment.
 
 ## License
 
