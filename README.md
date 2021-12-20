@@ -66,7 +66,7 @@ node build/ioq3ded.js +set fs_game <game> +set dedicated 1 +exec <server_config>
 
 ### baseq3 server, step-by-step
 
-*Note: for the initial download of game files you will need a server wth around 1GB of RAM. If the server exits with the message `Killed` then you need more memory*
+*Note: for the initial download of game files you will need a server wth around 1GB of RAM. If the server exits with the message `Killed` then you need more memory. You can try getting around this by downloading the ``/quakejs/base/baseq3`` files on another, more powerful, machine and copying them to your low-RAM server.  I've heard a report of this being successfully completed on a machine with 512MB of RAM*
 
 On your server clone this repository. `cd` into the `quakejs` clone and run the following commands:
 
