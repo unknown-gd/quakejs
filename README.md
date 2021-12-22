@@ -154,6 +154,7 @@ Step by step instructions on how to setup a server under Windows 10 can be found
 A video guide on setting up a Windows 10 server, and adding custom content, under Windows 10 has been developed by [grabisoft](https://github.com/grabisoft) and can be viewed at https://www.youtube.com/watch?v=m57rMXASWms
 
 ## Other QuakeJS Implementations
+* [quakejs-installer](https://github.com/digidigital/quakejs-installer): a simple and configurable Linux-based QuakeJS "one step" Installer with some common pre-included addons. 
 * [quakejs-docker](https://github.com/treyyoder/quakejs-docker): a fully local and Dockerized quakejs server. Independent, unadulterated, and free from the middleman.
 * [quake-kube](https://github.com/criticalstack/quake-kube): a Kubernetes-ified version of QuakeJS that runs a dedicated Quake 3 server in a Kubernetes Deployment.
 
