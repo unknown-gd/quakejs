@@ -1,7 +1,5 @@
 var _ = require('underscore');
-var fs = require('fs');
 var http = require('http');
-var https = require('https');
 var logger = require('winston');
 var opt = require('optimist');
 var url = require('url');
@@ -285,19 +283,7 @@ function loadConfig(configPath) {
 }
 
 (function main() {
-	var server = null;
-	var serverType = null;
-	if (config.key !== undefined && config.cert !== undefined) {
-		const opts = {
-			key: fs.readFileSync(config.key),
-			cert: fs.readFileSync(config.cert)
-		};
-		server = https.createServer(opts);
-		serverType = 'https';
-	} else {
-		server = http.createServer();
-		serverType = 'http';
-	}
+	var server = http.createServer();
 
 	var wss = new WebSocketServer({
 		server: server
@@ -357,7 +343,7 @@ function loadConfig(configPath) {
 
 	// listen only on 0.0.0.0 to force ipv4
         server.listen(config.port, '0.0.0.0',  function() {
-                console.log(serverType, 'master server is listening on port ' + server.address().port);
+                console.log('master server is listening on port ' + server.address().port);
         });
 
 	setInterval(pruneServers, pruneInterval);
