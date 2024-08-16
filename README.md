@@ -156,8 +156,6 @@ Copy `init.d/quakejs` to `/etc/init.d/`, make it executable, and enable it by ru
 
 *steamforge.net is currently down and so these isntructions can be found on the Wayback Machine here https://web.archive.org/web/20230319034832/https://steamforge.net/wiki/index.php/How_to_setup_a_local_QuakeJS_server_under_Debian_9_or_Debian_10*
 
-*Instructions for setting up under Windows can be found here https://web.archive.org/web/20230319034846/https://steamforge.net/wiki/index.php/How_to_setup_a_local_QuakeJS_server_under_Windows_10*
-
 ## Running Secure Servers (Content, Dedicated, and Web) Quick-Start
 
 1. Follow the [baseq3 server, step-by-step](#baseq3-server-step-by-step) instructions to initialize your repo, get `base/` assets and start a dedicated server config.
@@ -184,6 +182,8 @@ Now you (and others) can connect to your secure dedicated server at `https://<SE
 ## Windows
 
 Step by step instructions on how to setup a server under Windows 10 can be found at https://steamforge.net/wiki/index.php/How_to_setup_a_local_QuakeJS_server_under_Windows_10#Adding_your_own_Maps
+
+*steamforge.net is currently down and instructions for setting up under Windows can be found here https://web.archive.org/web/20230319034846/https://steamforge.net/wiki/index.php/How_to_setup_a_local_QuakeJS_server_under_Windows_10*
 
 A video guide on setting up a Windows 10 server, and adding custom content, under Windows 10 has been developed by [grabisoft](https://github.com/grabisoft) and can be viewed at https://www.youtube.com/watch?v=m57rMXASWms
 
