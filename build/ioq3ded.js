@@ -9752,7 +9752,7 @@ var SYSC = {
       /(.+\/|)(.+?)$/,
       "$1" + asset.checksum + "-$2"
     );
-    var url = "https://" + root + "/assets/" + name;
+    var url = "http://" + root + "/assets/" + name;
 
     SYS.DoXHR(url, {
       dataType: "arraybuffer",
@@ -9835,7 +9835,7 @@ var SYSC = {
         allocate(intArrayFromString("mapname"), "i8", ALLOC_STACK)
       )
     );
-    var url = "https://" + fs_cdn + "/assets/manifest.json";
+    var url = "http://" + fs_cdn + "/assets/manifest.json";
 
     function isInstaller(name) {
       return SYSC.installers.some(function (installer) {
@@ -10102,9 +10102,9 @@ var SYS = {
       return opts.onload(new Error("Must provide a URL"));
     }
 
-    var https = require("https");
+    var http = require("http");
 
-    https.get(url, function (res) {
+    http.get(url, function (res) {
       var buf = [];
 
       res.on("data", function (data) {
