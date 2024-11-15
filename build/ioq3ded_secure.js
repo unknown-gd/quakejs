@@ -9838,8 +9838,8 @@ var SYSC = {
       )
     );
     // var url = "https://" + fs_cdn + "/assets/manifest.json";
-    var url = "https://" + root.replace(":80", ":443") + "/assets/manifest.json";
-
+    var url =
+      "https://" + fs_cdn.replace(":80", ":443") + "/assets/manifest.json";
 
     function isInstaller(name) {
       return SYSC.installers.some(function (installer) {
