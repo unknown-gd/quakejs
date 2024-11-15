@@ -9752,7 +9752,9 @@ var SYSC = {
       /(.+\/|)(.+?)$/,
       "$1" + asset.checksum + "-$2"
     );
-    var url = "https://" + root + "/assets/" + name;
+    // var url = "https://" + root + "/assets/" + name;
+    var url =
+      "https://" + root.replace(":80", ":443") + root + "/assets/" + name;
 
     SYS.DoXHR(url, {
       dataType: "arraybuffer",
@@ -9835,7 +9837,9 @@ var SYSC = {
         allocate(intArrayFromString("mapname"), "i8", ALLOC_STACK)
       )
     );
-    var url = "https://" + fs_cdn + "/assets/manifest.json";
+    // var url = "https://" + fs_cdn + "/assets/manifest.json";
+    var url = "https://" + root.replace(":80", ":443") + "/assets/manifest.json";
+
 
     function isInstaller(name) {
       return SYSC.installers.some(function (installer) {
