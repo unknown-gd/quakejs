@@ -23,7 +23,7 @@ var config = loadConfig(argv.config);
 
 function loadConfig(configPath) {
   var config = {
-    listenPort: 27961,
+    listenPort: 443,
     proxyAddr: "localhost",
     proxyPort: 80,
     key: "/etc/letsencrypt/live/quakejs.com/privkey.pem",
