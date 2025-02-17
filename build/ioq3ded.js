@@ -10151,43 +10151,44 @@ var SYS = {
     console.log("loaded " + (frac * 100).toFixed(2) + "%");
   },
   PromptEULA: function (callback) {
-    var readline = require("readline");
+    // var readline = require("readline");
     var lines = SYSC.eula.split("\n");
 
     console.log(
       "In order to continue, the official Quake3 demo will need to be installed."
     );
+
     console.log(
       "Please read through the demo's EULA and type 'y' if you agree to it and would like to continue.\n"
     );
 
     console.log(lines.pop());
 
-    var rl = readline.createInterface(process.stdin, process.stdout);
-    rl.prompt();
+    // var rl = readline.createInterface(process.stdin, process.stdout);
+    // rl.prompt();
 
-    rl.on("line", function (line) {
-      line = line.trim();
+    // rl.on("line", function (line) {
+    //   line = line.trim();
 
-      if (lines.length) {
-        console.log(lines.pop());
-        return;
-      }
+    //   if (lines.length) {
+    //     console.log(lines.pop());
+    //     return;
+    //   }
 
-      if (!line) {
-        rl.setPrompt("Agree? (y/n): ");
-        rl.prompt();
-        return;
-      }
+    //   if (!line) {
+    //     rl.setPrompt("Agree? (y/n): ");
+    //     rl.prompt();
+    //     return;
+    //   }
 
-      rl.close();
+    //   rl.close();
 
-      if (line !== "y" && line !== "yes") {
-        return callback(new Error("You must agree to the EULA to continue"));
-      }
+    //   if (line !== "y" && line !== "yes") {
+    //     return callback(new Error("You must agree to the EULA to continue"));
+    //   }
 
-      return callback();
-    });
+    return callback();
+    // });
   },
 };
 function _Sys_Milliseconds() {
@@ -15235,17 +15236,17 @@ var GLImmediate = {
           Example: {
             // Create our map object.
             var map = new ObjTreeMap();
-  
+
             // Grab the static keyView for the map.
             var keyView = map.GetStaticKeyView();
-  
+
             // Let's make a map for:
             // root: <undefined>
             //   1: <undefined>
             //     2: <undefined>
             //       5: "Three, sir!"
             //       3: "Three!"
-  
+
             // Note how we can chain together `Reset` and `Next` to
             // easily descend based on multiple key fragments.
             keyView.Reset().Next(1).Next(2).Next(5).Set("Three, sir!");

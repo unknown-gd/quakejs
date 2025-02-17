@@ -357,7 +357,7 @@ function loadConfig(configPath) {
 
 	// listen only on 0.0.0.0 to force ipv4
 	server.listen(config.port, '0.0.0.0',  function() {
-			console.log(serverType, 'master server is listening on port ' + server.address().port);
+		console.log(serverType, 'master server is listening on port ' + server.address().port);
 	});
 
 	setInterval(pruneServers, pruneInterval);
