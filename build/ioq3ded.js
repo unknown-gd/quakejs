@@ -10159,7 +10159,7 @@ var SYS = {
     );
 
     console.log(
-      "Please read through the demo's EULA and type 'y' if you agree to it and would like to continue.\n"
+      "Please read through the demo's EULA and if you agree to it and would like to continue.\n"
     );
 
     console.log(lines.pop());
