@@ -270,7 +270,7 @@ function connection(ws) {
 
 function loadConfig(configPath) {
 	var config = {
-		port: 443
+		port: 27950
 	};
 
 	try {
