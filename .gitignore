@@ -2,3 +2,7 @@
 assets/
 assets_src/
 node_modules/
+
+base/baseq3/q3config_server.cfg
+package-lock.json
+*.pk3

@@ -25,7 +25,7 @@ function loadConfig(configPath) {
 	var config = {
 		content: 'content.quakejs.com',
 		master: 'master.quakejs.com',
-		port: 80
+		port: 443
 	};
 
 	try {

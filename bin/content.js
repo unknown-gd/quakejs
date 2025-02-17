@@ -131,7 +131,7 @@ function handleAsset(req, res, next) {
 function loadConfig(configPath) {
 	var config = {
 		root: path.join(__dirname, '..', 'assets'),
-		port: 80
+		port: 443
 	};
 
 	try {
