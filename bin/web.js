@@ -23,9 +23,9 @@ var config = loadConfig(argv.config);
 
 function loadConfig(configPath) {
 	var config = {
-		port: 8080,
-		content: 'localhost:9000',
-		master: 'master.quakejs.com'
+		content: 'content.quakejs.com',
+		master: 'master.quakejs.com',
+		port: 80
 	};
 
 	try {
