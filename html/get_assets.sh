@@ -1,67 +1,74 @@
 #!/bin/bash
 
-#Sean Begley
-#2017-07-06
+# Sean Begley
+# 2017-07-06 (Updated)
 
-#Bash Script to download all Assets from a quakejs content server.
-#The default server is http://content.quakejs.com
+# Unknown Developer
+# 2025-02-17 (Fixed)
 
-#OPTIONAL first parameters ($1) = address of alternate quakejs content server
+# Bash Script to download all Assets from a quakejs content server.
+# The default server is http://content.quakejs.com
 
-#EXAMPLE USAGE
-#./get_assets.sh
-#./get_assets.sh /alternate/output/folder
-#./get_assets.sh /alternate/output/folder http://alternate.content.server.com
+# OPTIONAL first parameters ($1) = address of alternate quakejs content server
 
-#Setup output folder
-#Default to "."
-#If the user enters parameters then the 1st parameter is the desired output directory
-output_dir=.
+# EXAMPLE USAGE
+# ./get_assets.sh
+# ./get_assets.sh /alternate/output/folder
+# ./get_assets.sh /alternate/output/folder http://alternate.content.server.com
+
+# Setup output folder (default: ".")
+output_dir="."
 if [ ! -z "$1" ]; then
-	output_dir=$1
+    output_dir="$1"
 fi
 
-#Setup the content server address
-#Default to http://content.quakejs.com
-#If the user enters paremters then the 2nd parameter is the desired content server
+# Setup content server address (default: http://content.quakejs.com)
 server="http://content.quakejs.com"
 if [ ! -z "$2" ]; then
-	server=$2
+    server="$2"
 fi
-printf "Using content server: $server\n"
 
-#Download manifest.json and get the # of assets available
+printf "Using content server: %s\n" "$server"
+
+# Download manifest.json and get the number of assets available
 printf "Downloading manifest.json\n"
 mkdir -p "$output_dir/assets"
-wget --quiet --show-progress --continue --no-clobber -O "$output_dir/assets/manifest.json" "$server/assets/manifest.json"
-num_elems=$(jq '. | length' "$output_dir/assets/manifest.json")
-#manifest="$(wget --quiet --show-progress --continue --no-clobber -O $server/assets/manifest.json)"
-#num_elems=$(echo "$manifest" | jq '. | length')
-printf "$num_elems assets found in manifest.json\n"
 
-#loop through the manifest and download each file
-#name contains the path/filename
-#checksum contains the checksum value
-#the file has to be downloaded from "path/checksum-filename"
-for i in $( eval echo {1..$num_elems} )
-do
-	let "j = $i - 1"
-	name=$(jq -r '.['$j'].name' "$output_dir/assets/manifest.json")
-	IFS='/' name_tokens=( $name )
-	if [ ${#name_tokens[@]} -eq "1" ]; then
-		filename=$(jq -r '.['$j'].checksum' "$output_dir/assets/manifest.json")'-'${name_tokens[0]}
-		download_path='assets'
-	else
-		filename=$(jq -r '.['$j'].checksum' "$output_dir/assets/manifest.json")'-'${name_tokens[1]}
-		download_path='assets/'${name_tokens[0]}
-	fi
-	printf "Downloading $name to $output_dir/$download_path/$filename\n"
-	
-	#if output path doesn't exist, make it
-	if [ ! -d "$output_dir/$download_path" ]; then
-		mkdir "$output_dir/$download_path"
-	fi
-	
-	#download file
-	wget --quiet --show-progress --continue --no-clobber -O "$output_dir/$download_path/$filename" "$server/$download_path/$filename"	
+wget --quiet --continue --no-clobber -O "$output_dir/assets/manifest.json" "$server/assets/manifest.json"
+
+# Ensure jq exists
+if ! command -v jq &> /dev/null; then
+    echo "Error: 'jq' is required but not installed. Install it and try again."
+    exit 1
+fi
+
+num_elems=$(jq '. | length' "$output_dir/assets/manifest.json")
+
+printf "%d assets found in manifest.json\n" "$num_elems"
+
+# Loop through manifest and download each file
+for i in $(seq 0 $((num_elems - 1))); do
+    name=$(jq -r ".[$i].name" "$output_dir/assets/manifest.json")
+    checksum=$(jq -r ".[$i].checksum" "$output_dir/assets/manifest.json")
+
+    # Split name into tokens
+    IFS='/' read -ra name_tokens <<< "$name"
+
+    if [ "${#name_tokens[@]}" -eq 1 ]; then
+        filename="${name_tokens[0]}"
+        download_path="assets"
+    else
+        filename="${name_tokens[1]}"
+        download_path="assets/${name_tokens[0]}"
+    fi
+
+    printf "Downloading %s to %s/%s\n" "$name" "$output_dir" "$download_path/$filename"
+
+    # Create directory if it doesn't exist
+    mkdir -p "$output_dir/$download_path"
+
+    # Download file
+    wget --quiet --continue --no-clobber -O "$output_dir/$download_path/$filename" "$server/$download_path/$checksum-$filename"
 done
+
+printf "Download complete.\n"
