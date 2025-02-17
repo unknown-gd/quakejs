@@ -312,20 +312,20 @@ function loadConfig(configPath) {
 				return;
 			}
 
-                        // node Buffer to ArrayBuffer
-                        var view = Uint8Array.from(buffer);
-                        var buffer = view.buffer;
+			// node Buffer to ArrayBuffer
+			var view = Uint8Array.from(buffer);
+			var buffer = view.buffer;
 
-                        // check to see if this is emscripten's port identifier message
-                        var wasfirst = first;
-                        first = false;
-                        if (wasfirst &&
-                                view.byteLength === 10 &&
-                                view[0] === 255 && view[1] === 255 && view[2] === 255 && view[3] === 255 &&
-                                view[4] === 'p'.charCodeAt(0) && view[5] === 'o'.charCodeAt(0) && view[6] === 'r'.charCodeAt(0) && view[7] === 't'.charCodeAt(0)) {
-                                conn.port = ((view[8] << 8) | view[9]);
-                                return;
-                        }
+			// check to see if this is emscripten's port identifier message
+			var wasfirst = first;
+			first = false;
+			if (wasfirst &&
+					view.byteLength === 10 &&
+					view[0] === 255 && view[1] === 255 && view[2] === 255 && view[3] === 255 &&
+					view[4] === 'p'.charCodeAt(0) && view[5] === 'o'.charCodeAt(0) && view[6] === 'r'.charCodeAt(0) && view[7] === 't'.charCodeAt(0)) {
+					conn.port = ((view[8] << 8) | view[9]);
+					return;
+			}
 
 			var msg = stripOOB(buffer);
 			if (!msg) {
@@ -334,11 +334,11 @@ function loadConfig(configPath) {
 			}
 
 			if (msg.indexOf('getservers ') === 0) {
-				handleGetServers(conn, msg.substr(11));
+				handleGetServers(conn, msg.slice(11));
 			} else if (msg.indexOf('heartbeat ') === 0) {
-				handleHeartbeat(conn, msg.substr(10));
+				handleHeartbeat(conn, msg.slice(10));
 			} else if (msg.indexOf('infoResponse\n') === 0) {
-				handleInfoResponse(conn, msg.substr(13));
+				handleInfoResponse(conn, msg.slice(13));
 			} else if (msg.indexOf('subscribe') === 0) {
 				handleSubscribe(conn);
 			} else {
@@ -356,9 +356,9 @@ function loadConfig(configPath) {
 	});
 
 	// listen only on 0.0.0.0 to force ipv4
-        server.listen(config.port, '0.0.0.0',  function() {
-                console.log(serverType, 'master server is listening on port ' + server.address().port);
-        });
+	server.listen(config.port, '0.0.0.0',  function() {
+			console.log(serverType, 'master server is listening on port ' + server.address().port);
+	});
 
 	setInterval(pruneServers, pruneInterval);
 })();
