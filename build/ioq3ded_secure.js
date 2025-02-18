@@ -9702,7 +9702,7 @@ var SYSC = {
       var slab = HEAP8;
       var n = 0;
       var pos = 0;
-      var stream = FS.open(path, "r", 0666);
+      var stream = FS.open(path, "r", 0o666);
       do {
         n = FS.read(stream, slab, bufp, chunkSize, pos);
         crc = CRC32.Update(crc, slab, bufp, n);
@@ -9726,7 +9726,9 @@ var SYSC = {
     return CRC32.Finish(crc);
   },
   GetCDN: function () {
-    return Pointer_stringify(_Com_GetCDN());
+    let url = Pointer_stringify(_Com_GetCDN());
+    console.log( "GetCDN: ", url )
+    return url
   },
   GetManifest: function () {
     var manifest = Pointer_stringify(_Com_GetManifest());
@@ -9747,13 +9749,16 @@ var SYSC = {
   },
   DownloadAsset: function (asset, onprogress, onload) {
     var root = SYSC.GetCDN();
+
     var name = asset.name.replace(
       /(.+\/|)(.+?)$/,
       "$1" + asset.checksum + "-$2"
     );
-    // var url = "https://" + root + "/assets/" + name;
-    var url =
-      "https://" + root.replace(":80", ":443") + root + "/assets/" + name;
+
+    var url = "https://" + root + "/assets/" + name;
+    console.log( "Downloading asset: ", url )
+
+    // var url = "https://" + root.replace(":80", ":443") + root + "/assets/" + name;
 
     SYS.DoXHR(url, {
       dataType: "arraybuffer",
@@ -9836,9 +9841,12 @@ var SYSC = {
         allocate(intArrayFromString("mapname"), "i8", ALLOC_STACK)
       )
     );
-    // var url = "https://" + fs_cdn + "/assets/manifest.json";
-    var url =
-      "https://" + fs_cdn.replace(":80", ":443") + "/assets/manifest.json";
+
+    console.log( "fs_cdn:", fs_cdn )
+
+    var url = "https://" + fs_cdn + "/assets/manifest.json";
+
+    console.log( "manifest:", url )
 
     function isInstaller(name) {
       return SYSC.installers.some(function (installer) {
@@ -9916,7 +9924,7 @@ var SYSC = {
     var localPath = PATH.join(fs_homepath, name);
 
     try {
-      FS.mkdir(PATH.dirname(localPath), 0777);
+      FS.mkdir(PATH.dirname(localPath), 0o777);
     } catch (e) {
       if (e.errno !== ERRNO_CODES.EEXIST) {
         return callback(e);
