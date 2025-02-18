@@ -49,18 +49,42 @@
 				return args;
 			}
 
+			function getCookie(key) {
+				const cookies = document.cookie.split("; ");
+				for (let cookie of cookies) {
+					let [cookieKey, cookieValue] = cookie.split("=");
+					if (cookieKey === key) {
+						return decodeURIComponent(cookieValue);
+					}
+				}
+				return null;
+			}
+
+			function setCookie(key, value, days) {
+				let expires = "";
+				if (days) {
+					let date = new Date();
+					date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+					expires = "; expires=" + date.toUTCString();
+				}
+
+				document.cookie = key + "=" + encodeURIComponent(value) + expires + "; path=/";
+			}
+
 			window.onload = function () {
 				function resizeViewport() {
 					if (!ioq3.canvas) {
 						// ignore if the canvas hasn't yet initialized
 						return;
 					}
+
 					if ((document['webkitFullScreenElement'] || document['webkitFullscreenElement'] ||
 								document['mozFullScreenElement'] || document['mozFullscreenElement'] ||
 								document['fullScreenElement'] || document['fullscreenElement'])) {
 						// ignore resize events due to going fullscreen
 						return;
 					}
+
 					ioq3.setCanvasSize(ioq3.viewport.offsetWidth, ioq3.viewport.offsetHeight);
 				}
 
@@ -88,10 +112,16 @@
 
 				window.addEventListener('resize', resizeViewport);
 
+				let username = getCookie( "username" )
+				if (!username) {
+					username = prompt( "Please enter your nickname", "Gordon Freeman" );
+					setCookie( "username", username, 30 );
+				}
+
 				// merge default args with query string args
 				//var args = ['+set', 'fs_cdn', 'content.quakejs.com:80', '+set', 'sv_master1', 'master.quakejs.com:27950']; //original args to list the servers from master.quakejs.com
 				//var args = ['+set', 'fs_cdn', 'content.quakejs.com:80', '+set', 'sv_master1', 'master.quakejs.com:27950', '+connect', 'YOUR_SERVER_HERE:27960']; //additional +connect arguement to connect to a specific server
-				var args = ['+set', 'fs_cdn', 'quakejs:80', '+connect', 'quakejs:80']; //custom args list targeting a local content server and local game server both at the address 'quakejs'
+				var args = ['+set', 'fs_cdn', 'quakejs:80', '+connect', 'quakejs:80', '+name', username]; //custom args list targeting a local content server and local game server both at the address 'quakejs'
 				args.push.apply(args, getQueryCommands());
 				ioq3.callMain(args);
 			};
