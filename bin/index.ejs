@@ -143,6 +143,11 @@
 					] )
 				);
 
+				if (!username) {
+					window.location.reload();
+					return;
+				}
+
 				setCookie( "username", username, 30 );
 
 				args.push.apply(args, [ "+s_volume", "0.1" ] );
