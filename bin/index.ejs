@@ -18,7 +18,7 @@
 				bottom: 0;
 				right: 0;
 				overflow: hidden;
-				background-image: url('https://i.imgur.com/b8HuMlo.gif');
+				background-image: url("https://i.imgur.com/b8HuMlo.gif");
 				background-repeat: no-repeat;
 				background-position: center;
 				background-size: 24em;
@@ -71,8 +71,8 @@
 			var match;
 			while (match = search.exec(query)) {
 				var val = decodeURIComponent(match[1]);
-				val = val.split(' ');
-				val[0] = '+' + val[0];
+				val = val.split(" ");
+				val[0] = "+" + val[0];
 				args.push.apply(args, val);
 			}
 
@@ -100,6 +100,11 @@
 			document.cookie = key + "=" + encodeURIComponent(value) + expires + "; path=/";
 		}
 
+		function getRandomItem(arr) {
+			const randomIndex = Math.floor(Math.random() * arr.length);
+			return arr[randomIndex];
+		}
+
 		window.onload = function () {
 			function resizeViewport() {
 				if (!ioq3.canvas) {
@@ -107,9 +112,9 @@
 					return;
 				}
 
-				if ((document['webkitFullScreenElement'] || document['webkitFullscreenElement'] ||
-						   document['mozFullScreenElement'] || document['mozFullscreenElement'] ||
-						   document['fullScreenElement'] || document['fullscreenElement'])) {
+				if ((document["webkitFullScreenElement"] || document["webkitFullscreenElement"] ||
+						   document["mozFullScreenElement"] || document["mozFullscreenElement"] ||
+						   document["fullScreenElement"] || document["fullscreenElement"])) {
 					// ignore resize events due to going fullscreen
 					return;
 				}
@@ -117,18 +122,34 @@
 				ioq3.setCanvasSize(ioq3.viewport.offsetWidth, ioq3.viewport.offsetHeight);
 			}
 
-			ioq3.viewport = document.getElementById('viewport-frame');
+			ioq3.viewport = document.getElementById("viewport-frame");
 			ioq3.elementPointerLock = true;
-			window.addEventListener('resize', resizeViewport);
+			window.addEventListener("resize", resizeViewport);
+
+			// merge default args with query string args
+			var args = ["+set", "fs_cdn", "<%= content %>", "+set", "sv_master1", "<%= master %>"];
 
 			let username = getCookie( "username" )
 			if (!username) {
-				username = prompt( "Please enter your nickname", "Gordon Freeman" );
+				username = prompt(
+					"Please enter your nickname",
+					getRandomItem( [
+						"Gordon Freeman", "Alyx Vance",
+						"Eli Vance", "Isaac Kleiner",
+						"Barney Calhoun", "Judith Mossman",
+						"Wallace Breen", "Father Grigori",
+						"Leon", "Odessa Cubbage", "G-Man",
+						"Wallace Breen"
+					] )
+				);
+
 				setCookie( "username", username, 30 );
+
+				args.push.apply(args, [ "+s_volume", "0.1" ] );
+				args.push.apply(args, [ "+s_musicvolume", "0.05" ] );
 			}
 
-			// merge default args with query string args
-			var args = ['+set', 'fs_cdn', '<%= content %>', '+set', 'sv_master1', '<%= master %>', '+name', username];
+			args.push.apply(args, [ "+name", username] );
 			args.push.apply(args, getQueryCommands());
 			ioq3.callMain(args);
 		};
